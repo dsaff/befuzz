@@ -6,8 +6,6 @@ plugins {
   kotlin("plugin.serialization") version "1.6.21"
 }
 
-// SAFF: delete heap-specific parts!
-
 group = "net.saff"
 version = "1.0-SNAPSHOT"
 
