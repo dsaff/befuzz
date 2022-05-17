@@ -46,6 +46,18 @@ class TheoryTest {
   }
 
   @Test
+  fun convergeReturnsEvidence() {
+    val alist = ArrayList<String>()
+    val llist = LinkedList<String>()
+    converge(exploreTreeFates(maxBits = 1), alist, llist) {
+      while (chooseBoolean("Another?")) {
+        it.add(chooseString("What to add?"))
+      }
+      it.toString()
+    }.check { it.anyAdventure { sawChoice("Another?", "false") } }
+  }
+
+  @Test
   fun convergeFromInt() {
     val alist = ArrayList<String>()
     val llist = LinkedList<String>()

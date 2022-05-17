@@ -172,16 +172,22 @@ fun Adventure.chooseStepAndExecute(vararg steps: Pair<String, () -> Unit>) {
   }()
 }
 
-fun <T> converge(fates: Fates, vararg comparees: T, fn: Adventure.(T) -> String) {
-  // SAFF: this should probably return evidence
+fun <T> converge(fates: Fates, vararg comparees: T, fn: Adventure.(T) -> String): Evidence {
+  // SAFF: DUP with theory?
+  val evidence = Evidence()
+
   fates.allFates().forEach { fate ->
     comparees.map {
       val adventure = Adventure(fate.freshCopy())
-      adventure.fn(it) to adventure.logAsString()
+      val result = adventure.fn(it)
+      evidence.logSuccessfulAdventure(adventure)
+      result to adventure.logAsString()
     }.let {
       if (it.toMap().size != 1) {
         throw RuntimeException(it.toString())
       }
     }
   }
+
+  return evidence
 }
