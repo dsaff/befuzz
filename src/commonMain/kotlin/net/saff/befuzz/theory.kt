@@ -2,18 +2,23 @@ package net.saff.befuzz
 
 import kotlinx.serialization.Serializable
 
-fun theory(fates: Fates, fn: Adventure.() -> Unit): Evidence {
-  val evidence = Evidence()
-  fates.allFates().forEach {
-    val adventure = Adventure(it)
-    try {
-      adventure.fn()
-    } catch (t: Throwable) {
-      throw GoodDataException(adventure.logAsString(), t)
-    }
-    evidence.logSuccessfulAdventure(adventure)
+fun <T> Evidence.goOnAdventure(fate: Fate, fn: Adventure.() -> T): T {
+  val adventure = Adventure(fate)
+  try {
+    val result = adventure.fn()
+    logSuccessfulAdventure(adventure)
+    return result
+  } catch (t: Throwable) {
+    throw GoodDataException(adventure.logAsString(), t)
   }
-  return evidence
+}
+
+fun theory(fates: Fates, fn: Adventure.() -> Unit): Evidence {
+  return Evidence().apply {
+    fates.allFates().forEach {
+      goOnAdventure(it, fn)
+    }
+  }
 }
 
 interface Fates {
@@ -129,7 +134,7 @@ fun Fate.scryIntLessThan(n: Int): Int {
   }
 
   val lowOrderBit = scryBit()
-  return scryIntLessThan((n + 1 - lowOrderBit)/ 2) * 2 + lowOrderBit
+  return scryIntLessThan((n + 1 - lowOrderBit) / 2) * 2 + lowOrderBit
 }
 
 fun fatesTo(i: Int): Fates {
@@ -173,21 +178,13 @@ fun Adventure.chooseStepAndExecute(vararg steps: Pair<String, () -> Unit>) {
 }
 
 fun <T> converge(fates: Fates, vararg comparees: T, fn: Adventure.(T) -> String): Evidence {
-  // SAFF: DUP with theory?
-  val evidence = Evidence()
-
-  fates.allFates().forEach { fate ->
-    comparees.map {
-      val adventure = Adventure(fate.freshCopy())
-      val result = adventure.fn(it)
-      evidence.logSuccessfulAdventure(adventure)
-      result to adventure.logAsString()
-    }.let {
-      if (it.toMap().size != 1) {
-        throw RuntimeException(it.toString())
+  return Evidence().apply {
+    fates.allFates().forEach { fate ->
+      comparees.map { goOnAdventure(fate.freshCopy()) { fn(it) to logAsString() } }.let {
+        if (it.toMap().size != 1) {
+          throw RuntimeException(it.toString())
+        }
       }
     }
   }
-
-  return evidence
 }
