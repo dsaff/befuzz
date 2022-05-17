@@ -120,6 +120,7 @@ fun Adventure.chooseBoolean(question: String): Boolean {
 
 interface Fate {
   fun scryBit(): Int
+  fun freshCopy(): Fate
 }
 
 fun Fate.scryIntLessThan(n: Int): Int {
@@ -139,13 +140,17 @@ fun fatesTo(i: Int): Fates {
   }
 }
 
-class FateFromInt(byteSource: Int) : Fate {
+class FateFromInt(private val byteSource: Int) : Fate {
   private var remainingByteSource = byteSource
 
   override fun scryBit(): Int {
     val bit = remainingByteSource and 1
     remainingByteSource = remainingByteSource.shr(1)
     return bit
+  }
+
+  override fun freshCopy(): Fate {
+    TODO()
   }
 }
 
@@ -165,4 +170,18 @@ fun Adventure.chooseStepAndExecute(vararg steps: Pair<String, () -> Unit>) {
   chooseLabeled("Step") {
     steps[scryIntLessThan(steps.size)]
   }()
+}
+
+fun <T> converge(fates: Fates, vararg comparees: T, fn: Adventure.(T) -> String) {
+  // SAFF: this should probably return evidence
+  fates.allFates().forEach { fate ->
+    comparees.map {
+      val adventure = Adventure(fate.freshCopy())
+      adventure.fn(it) to adventure.logAsString()
+    }.let {
+      if (it.toMap().size != 1) {
+        throw RuntimeException(it.toString())
+      }
+    }
+  }
 }

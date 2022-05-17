@@ -1,7 +1,11 @@
 package test.net.saff.befuzz
 
+import java.util.LinkedList
 import net.saff.checkmark.Checkmark.Companion.check
 import net.saff.befuzz.chooseBoolean
+import net.saff.befuzz.chooseString
+import net.saff.befuzz.converge
+import net.saff.befuzz.exploreTreeFates
 import net.saff.befuzz.fatesTo
 import net.saff.befuzz.theory
 import net.saff.checkmark.thrown
@@ -27,5 +31,28 @@ class TheoryTest {
         throw re
       }
     }!!.stackTrace.toList().check { trace -> trace[0] == rootStackTrace!![0] }
+  }
+
+  @Test
+  fun convergeSometimesPasses() {
+    val alist = ArrayList<String>()
+    val llist = LinkedList<String>()
+    converge(exploreTreeFates(maxBits = 1), alist, llist) {
+      while (chooseBoolean("Another?")) {
+        it.add(chooseString("What to add?"))
+      }
+      it.toString()
+    }
+  }
+
+  @Test
+  fun convergeSometimesFails() {
+    val getFive = { 5 }
+    val getSix = { 6 }
+    thrown {
+      converge(exploreTreeFates(0), getFive, getSix) {
+        it().toString()
+      }
+    }.check { it != null }
   }
 }
