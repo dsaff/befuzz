@@ -46,6 +46,18 @@ class TheoryTest {
   }
 
   @Test
+  fun convergeFromInt() {
+    val alist = ArrayList<String>()
+    val llist = LinkedList<String>()
+    converge(fatesTo(3), alist, llist) {
+      while (chooseBoolean("Another?")) {
+        it.add(chooseString("What to add?"))
+      }
+      it.toString()
+    }
+  }
+
+  @Test
   fun convergeSometimesFails() {
     val getFive = { 5 }
     val getSix = { 6 }

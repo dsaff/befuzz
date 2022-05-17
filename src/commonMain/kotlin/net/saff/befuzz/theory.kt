@@ -150,7 +150,7 @@ class FateFromInt(private val byteSource: Int) : Fate {
   }
 
   override fun freshCopy(): Fate {
-    TODO()
+    return FateFromInt(byteSource)
   }
 }
 
