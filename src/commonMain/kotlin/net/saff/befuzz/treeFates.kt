@@ -18,8 +18,10 @@ fun exploreTreeFates(maxBits: Int): Fates {
       override fun scryBit(): Int {
         val returnThis = (bitSource and mask).countOneBits()
         if (returnThis == 0 && mask > bitSource && bitSource.countOneBits() < maxBits) {
-          // SAFF: this adds multiple times for converge!
-          nextOptions.add(bitSource or mask)
+          val newOption = bitSource or mask
+          if (!nextOptions.contains(newOption)) {
+            nextOptions.add(newOption)
+          }
         }
         mask = mask.shl(1)
         return returnThis

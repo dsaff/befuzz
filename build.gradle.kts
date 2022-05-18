@@ -32,7 +32,7 @@ kotlin {
     val jvmTest by getting {
       dependencies {
         implementation("junit:junit:4.13.2")
-        implementation("net.saff.checkmark:checkmark:0.1.3")
+        implementation("net.saff.checkmark:checkmark:0.1.5")
       }
     }
 //    val nativeMain by getting {

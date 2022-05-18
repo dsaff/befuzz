@@ -79,4 +79,17 @@ class TheoryTest {
       }
     }.check { it != null }
   }
+
+
+  @Test
+  fun convergeExploresEachFateOnce() {
+    val getFive = { 5 }
+    val getFiveAgain = { 5 }
+    val chosen = mutableListOf<Boolean>()
+    converge(exploreTreeFates(1), getFive, getFiveAgain) {
+      chosen.add(chooseBoolean("Don't use"))
+      it().toString()
+    }
+    chosen.check { it == listOf(false, false, true, true) }
+  }
 }
