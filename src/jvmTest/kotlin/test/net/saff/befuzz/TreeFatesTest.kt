@@ -7,6 +7,7 @@ import net.saff.befuzz.chooseBoolean
 import net.saff.befuzz.exploreTreeFates
 import net.saff.befuzz.scryPath
 import net.saff.befuzz.theory
+import net.saff.checkmark.thrown
 import org.junit.Test
 
 class TreeFatesTest {
@@ -18,6 +19,16 @@ class TreeFatesTest {
       }
     }.check { it == listOf("", "1", "11", "111") }
   }
+
+  @Test
+  fun fateNumberIncludedInFailure() {
+    thrown {
+      theory(exploreTreeFates(maxBits = 7)) {
+        chooseStringOfOnes().check { it.length < 6 }
+      }
+    }!!.message.check { it!!.contains("64") }
+  }
+
 
   @Test
   fun treeFateTwoBits() {

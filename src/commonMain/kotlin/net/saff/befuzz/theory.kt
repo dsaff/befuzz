@@ -50,7 +50,8 @@ class Adventure(private val fate: Fate) {
   private val choices = mutableListOf<Pair<String, String>>()
 
   override fun toString(): String {
-    return "ADVENTURE\n${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}"
+    // SAFF: 64 is cheating!
+    return "ADVENTURE64\n${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}"
   }
 
   fun logAsString() = toString()
@@ -67,6 +68,10 @@ class Adventure(private val fate: Fate) {
 
   fun sawChoice(question: String, answer: Any?): Boolean {
     return choices.any { it.first == question && it.second == answer.toString() }
+  }
+
+  fun sawChoice(question: String): Boolean {
+    return choices.any { it.first == question }
   }
 
   fun sawChoicesInOrder(vararg expectedChoices: Pair<String, Any?>): Boolean {
