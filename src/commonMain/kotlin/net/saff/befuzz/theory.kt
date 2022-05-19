@@ -21,10 +21,11 @@ fun theory(fates: Fates, fn: Adventure.() -> Unit): Evidence {
   }
 }
 
-fun theory(fate: Fate, fn: Adventure.() -> Unit): Evidence {
-  // SAFF: pass-through?
-  return Evidence().apply { goOnAdventure(fate, fn) }
+fun Fate.asFates() = object : Fates {
+  override fun allFates() = sequenceOf(this@asFates)
 }
+
+fun theory(fate: Fate, fn: Adventure.() -> Unit) = theory(fate.asFates(), fn)
 
 interface Fates {
   fun allFates(): Sequence<Fate>
