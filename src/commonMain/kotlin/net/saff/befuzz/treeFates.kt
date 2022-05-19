@@ -30,6 +30,11 @@ fun exploreTreeFates(maxBits: Int): Fates {
       override fun freshCopy(): Fate {
         return newFate(bitSource, nextOptions)
       }
+
+      override fun hint(): String {
+        // SAFF: cheating
+        return ""
+      }
     }
   }
 }

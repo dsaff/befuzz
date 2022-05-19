@@ -56,8 +56,8 @@ class Adventure(private val fate: Fate) {
   private val choices = mutableListOf<Pair<String, String>>()
 
   override fun toString(): String {
-    // SAFF: 64 is cheating!
-    return "ADVENTURE63\n${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}"
+    // SAFF: weird and long
+    return "ADVENTURE(${fate.hint()})\n${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}"
   }
 
   fun logAsString() = toString()
@@ -93,7 +93,6 @@ class Adventure(private val fate: Fate) {
     }
     return false
   }
-
 
   fun <T> T.assume(fn: (T) -> Boolean): T {
     if (!fn(this)) {
@@ -137,6 +136,7 @@ fun Adventure.chooseBoolean(question: String): Boolean {
 interface Fate {
   fun scryBit(): Int
   fun freshCopy(): Fate
+  fun hint(): String
 }
 
 fun Fate.scryIntLessThan(n: Int): Int {
@@ -167,6 +167,11 @@ class FateFromInt(private val byteSource: Int) : Fate {
 
   override fun freshCopy(): Fate {
     return FateFromInt(byteSource)
+  }
+
+  override fun hint(): String {
+    // SAFF: cheating
+    return ""
   }
 }
 

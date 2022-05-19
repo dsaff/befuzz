@@ -31,6 +31,15 @@ class TreeFatesTest {
   }
 
   @Test
+  fun fateNumberIncludedInFailure5bits() {
+    thrown {
+      theory(exploreTreeFates(maxBits = 7)) {
+        chooseStringOfOnes().check { it.length < 5 }
+      }
+    }!!.message!!.check { it.contains("31") }.check { it.contains("63") }
+  }
+
+  @Test
   fun canSeedWithNumber() {
     buildList {
       theory(FateFromInt(63)) {
