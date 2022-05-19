@@ -21,6 +21,11 @@ fun theory(fates: Fates, fn: Adventure.() -> Unit): Evidence {
   }
 }
 
+fun theory(fate: Fate, fn: Adventure.() -> Unit): Evidence {
+  // SAFF: pass-through?
+  return Evidence().apply { goOnAdventure(fate, fn) }
+}
+
 interface Fates {
   fun allFates(): Sequence<Fate>
 }
@@ -51,7 +56,7 @@ class Adventure(private val fate: Fate) {
 
   override fun toString(): String {
     // SAFF: 64 is cheating!
-    return "ADVENTURE64\n${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}"
+    return "ADVENTURE63\n${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}"
   }
 
   fun logAsString() = toString()

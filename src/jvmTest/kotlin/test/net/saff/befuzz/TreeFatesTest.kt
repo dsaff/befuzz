@@ -2,6 +2,7 @@ package test.net.saff.befuzz
 
 import net.saff.checkmark.Checkmark.Companion.check
 import net.saff.befuzz.Adventure
+import net.saff.befuzz.FateFromInt
 import net.saff.befuzz.choose
 import net.saff.befuzz.chooseBoolean
 import net.saff.befuzz.exploreTreeFates
@@ -26,9 +27,17 @@ class TreeFatesTest {
       theory(exploreTreeFates(maxBits = 7)) {
         chooseStringOfOnes().check { it.length < 6 }
       }
-    }!!.message.check { it!!.contains("64") }
+    }!!.message.check { it!!.contains("63") }
   }
 
+  @Test
+  fun canSeedWithNumber() {
+    buildList {
+      theory(FateFromInt(63)) {
+        add(chooseStringOfOnes())
+      }
+    }.check { it == listOf("111111") }
+  }
 
   @Test
   fun treeFateTwoBits() {
