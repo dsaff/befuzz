@@ -49,6 +49,12 @@ class TreeFatesTest {
   }
 
   @Test
+  fun fateFromIntHint() {
+    FateFromInt(62).hint().check { it == "intFate(62)" }
+    FateFromInt(37).hint().check { it == "intFate(37)" }
+  }
+
+  @Test
   fun treeFateTwoBits() {
     buildList {
       theory(exploreTreeFates(maxBits = 2)) {

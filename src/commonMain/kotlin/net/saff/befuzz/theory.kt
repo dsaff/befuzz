@@ -170,9 +170,9 @@ class FateFromInt(private val byteSource: Int) : Fate {
     return FateFromInt(byteSource)
   }
 
+  // SAFF: punchier kotlin
   override fun hint(): String {
-    // SAFF: cheating
-    return "31"
+    return "intFate($byteSource)"
   }
 }
 
