@@ -32,8 +32,8 @@ fun exploreTreeFates(maxBits: Int): Fates {
       }
 
       override fun hint(): String {
-        // SAFF: cheating
-        return ""
+        // SAFF: include type
+        return bitSource.toString()
       }
     }
   }

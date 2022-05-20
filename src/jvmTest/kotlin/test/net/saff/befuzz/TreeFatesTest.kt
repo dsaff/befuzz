@@ -36,7 +36,7 @@ class TreeFatesTest {
       theory(exploreTreeFates(maxBits = 7)) {
         chooseStringOfOnes().check { it.length < 5 }
       }
-    }!!.message!!.check { it.contains("31") }.check { it.contains("63") }
+    }!!.message!!.check { it.contains("31") }.check { !it.contains("63") }
   }
 
   @Test

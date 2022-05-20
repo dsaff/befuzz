@@ -35,9 +35,9 @@ class TheoryTest {
 
   @Test
   fun convergeSometimesPasses() {
-    val alist = ArrayList<String>()
-    val llist = LinkedList<String>()
-    converge(exploreTreeFates(maxBits = 1), alist, llist) {
+    val aList = ArrayList<String>()
+    val lList = LinkedList<String>()
+    converge(exploreTreeFates(maxBits = 1), aList, lList) {
       while (chooseBoolean("Another?")) {
         it.add(chooseString("What to add?"))
       }
@@ -47,9 +47,9 @@ class TheoryTest {
 
   @Test
   fun convergeReturnsEvidence() {
-    val alist = ArrayList<String>()
-    val llist = LinkedList<String>()
-    converge(exploreTreeFates(maxBits = 1), alist, llist) {
+    val aList = ArrayList<String>()
+    val lList = LinkedList<String>()
+    converge(exploreTreeFates(maxBits = 1), aList, lList) {
       while (chooseBoolean("Another?")) {
         it.add(chooseString("What to add?"))
       }
@@ -58,10 +58,23 @@ class TheoryTest {
   }
 
   @Test
+  fun singleParamSawChoice() {
+    // SAFF: DUP above?
+    val aList = ArrayList<String>()
+    val lList = LinkedList<String>()
+    converge(exploreTreeFates(maxBits = 1), aList, lList) {
+      while (chooseBoolean("Another?")) {
+        it.add(chooseString("What to add?"))
+      }
+      it.toString()
+    }.check { it.anyAdventure { sawChoice("Another?") } }
+  }
+
+  @Test
   fun convergeFromInt() {
-    val alist = ArrayList<String>()
-    val llist = LinkedList<String>()
-    converge(fatesTo(3), alist, llist) {
+    val aList = ArrayList<String>()
+    val lList = LinkedList<String>()
+    converge(fatesTo(3), aList, lList) {
       while (chooseBoolean("Another?")) {
         it.add(chooseString("What to add?"))
       }

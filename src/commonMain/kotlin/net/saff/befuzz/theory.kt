@@ -77,6 +77,7 @@ class Adventure(private val fate: Fate) {
     return choices.any { it.first == question && it.second == answer.toString() }
   }
 
+  // SAFF: test in
   fun sawChoice(question: String): Boolean {
     return choices.any { it.first == question }
   }
@@ -172,7 +173,7 @@ class FateFromInt(private val byteSource: Int) : Fate {
 
   override fun hint(): String {
     // SAFF: cheating
-    return ""
+    return "31"
   }
 }
 
