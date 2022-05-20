@@ -56,8 +56,9 @@ class Adventure(private val fate: Fate) {
   private val choices = mutableListOf<Pair<String, String>>()
 
   override fun toString(): String {
-    // SAFF: weird and long
-    return "ADVENTURE(${fate.hint()})\n${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}"
+    return """|ADVENTURE(${fate.hint()})
+              |${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}
+              |""".trimMargin()
   }
 
   fun logAsString() = toString()
