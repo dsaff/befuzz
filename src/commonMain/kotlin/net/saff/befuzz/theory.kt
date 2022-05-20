@@ -38,13 +38,8 @@ class Evidence {
     adventures.add(adventure)
   }
 
-  fun anyAdventure(fn: Adventure.() -> Boolean): Boolean {
-    return adventures.any { it.fn() }
-  }
-
-  override fun toString(): String {
-    return adventures.joinToString("\n")
-  }
+  fun anyAdventure(fn: Adventure.() -> Boolean) = adventures.any { it.fn() }
+  override fun toString() = adventures.joinToString("\n")
 }
 
 expect class GoodDataException(adventureLog: String, cause: Throwable) : RuntimeException
@@ -55,17 +50,14 @@ data class AdventureLog(val choices: List<Pair<String, String>>, val answer: Str
 class Adventure(private val fate: Fate) {
   private val choices = mutableListOf<Pair<String, String>>()
 
-  override fun toString(): String {
-    return """|ADVENTURE(${fate.hint()})
-              |${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}
-              |""".trimMargin()
-  }
+  override fun toString() =
+    """|ADVENTURE(${fate.hint()})
+       |${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}
+       |""".trimMargin()
 
   fun logAsString() = toString()
 
-  fun extractLog(answer: String): AdventureLog {
-    return AdventureLog(choices, answer)
-  }
+  fun extractLog(answer: String) = AdventureLog(choices, answer)
 
   fun <T> chooseLabeled(question: String, fn: Fate.() -> Pair<String, T>): T {
     val answer = fate.fn()
@@ -73,13 +65,10 @@ class Adventure(private val fate: Fate) {
     return answer.second
   }
 
-  fun sawChoice(question: String, answer: Any?): Boolean {
-    return choices.any { it.first == question && it.second == answer.toString() }
-  }
+  fun sawChoice(question: String, answer: Any?) =
+    choices.any { it.first == question && it.second == answer.toString() }
 
-  fun sawChoice(question: String): Boolean {
-    return choices.any { it.first == question }
-  }
+  fun sawChoice(question: String) = choices.any { it.first == question }
 
   fun sawChoicesInOrder(vararg expectedChoices: Pair<String, Any?>): Boolean {
     val remainingChoices = expectedChoices.toMutableList()
@@ -103,35 +92,26 @@ class Adventure(private val fate: Fate) {
   }
 }
 
-class AssumptionViolatedException(message: String) : RuntimeException(message) {
+class AssumptionViolatedException(message: String) : RuntimeException(message)
 
-}
-
-fun <T> Adventure.choose(question: String, fn: Fate.() -> T): T {
-  return chooseLabeled(question) { fn().run { toString() to this } }
-}
+fun <T> Adventure.choose(question: String, fn: Fate.() -> T) =
+  chooseLabeled(question) { fn().run { toString() to this } }
 
 fun <T> Adventure.chooseFromNested(
   question: String,
   vararg options: Pair<String, Adventure.() -> T>
-): T {
-  return chooseLabeled(question) {
-    val option = scryPath(*options)
-    val generate = option.second
-    option.first to this@chooseFromNested.generate()
-  }
+) = chooseLabeled(question) {
+  val option = scryPath(*options)
+  val generate = option.second
+  option.first to this@chooseFromNested.generate()
 }
 
-fun Adventure.chooseIntLessThan(question: String, n: Int): Int {
-  return choose(question) {
-    scryIntLessThan(n)
-  }
+fun Adventure.chooseIntLessThan(question: String, n: Int) = choose(question) {
+  scryIntLessThan(n)
 }
 
-fun Adventure.chooseBoolean(question: String): Boolean {
-  return choose(question) {
-    scryIntLessThan(2) == 1
-  }
+fun Adventure.chooseBoolean(question: String) = choose(question) {
+  scryIntLessThan(2) == 1
 }
 
 interface Fate {
@@ -149,11 +129,9 @@ fun Fate.scryIntLessThan(n: Int): Int {
   return scryIntLessThan((n + 1 - lowOrderBit) / 2) * 2 + lowOrderBit
 }
 
-fun fatesTo(i: Int): Fates {
-  return object : Fates {
-    override fun allFates(): Sequence<Fate> {
-      return (0 until i + 1).map { FateFromInt(it) }.asSequence()
-    }
+fun fatesTo(i: Int) = object : Fates {
+  override fun allFates(): Sequence<Fate> {
+    return (0 until i + 1).map { FateFromInt(it) }.asSequence()
   }
 }
 
@@ -166,27 +144,14 @@ class FateFromInt(private val byteSource: Int) : Fate {
     return bit
   }
 
-  override fun freshCopy(): Fate {
-    return FateFromInt(byteSource)
-  }
+  override fun freshCopy() = FateFromInt(byteSource)
 
-  // SAFF: punchier kotlin
-  override fun hint(): String {
-    return "intFate($byteSource)"
-  }
+  override fun hint() = "intFate($byteSource)"
 }
 
-fun <T> Fate.scryPath(vararg choices: T): T {
-  return choices[scryIntLessThan(choices.size)]
-}
-
-fun Adventure.chooseString(question: String): String {
-  return choose(question) { scryString() }
-}
-
-fun Fate.scryString(): String {
-  return scryPath("Satsuki", "Mei", "Totoro", "")
-}
+fun <T> Fate.scryPath(vararg choices: T) = choices[scryIntLessThan(choices.size)]
+fun Adventure.chooseString(question: String) = choose(question) { scryString() }
+fun Fate.scryString() = scryPath("Satsuki", "Mei", "Totoro", "")
 
 fun Adventure.chooseStepAndExecute(vararg steps: Pair<String, () -> Unit>) {
   chooseLabeled("Step") {
