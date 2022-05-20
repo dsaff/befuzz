@@ -105,4 +105,9 @@ class TheoryTest {
     }
     chosen.check { it == listOf(false, false, true, true) }
   }
+
+  @Test
+  fun fateHint() {
+    exploreTreeFates(1).allFates().first().hint().check { it == "treeFate(0)" }
+  }
 }
