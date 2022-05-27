@@ -59,7 +59,6 @@ class TheoryTest {
 
   @Test
   fun singleParamSawChoice() {
-    // SAFF: DUP above?
     val aList = ArrayList<String>()
     val lList = LinkedList<String>()
     converge(exploreTreeFates(maxBits = 1), aList, lList) {

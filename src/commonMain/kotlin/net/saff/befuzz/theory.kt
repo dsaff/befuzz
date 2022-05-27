@@ -21,13 +21,11 @@ fun theory(fates: Fates, fn: Adventure.() -> Unit): Evidence {
   }
 }
 
-fun Fate.asFates() = object : Fates {
-  override fun allFates() = sequenceOf(this@asFates)
-}
+fun Fate.asFates() = Fates { sequenceOf(this@asFates) }
 
 fun theory(fate: Fate, fn: Adventure.() -> Unit) = theory(fate.asFates(), fn)
 
-interface Fates {
+fun interface Fates {
   fun allFates(): Sequence<Fate>
 }
 
@@ -50,12 +48,20 @@ data class AdventureLog(val choices: List<Pair<String, String>>, val answer: Str
 class Adventure(private val fate: Fate) {
   private val choices = mutableListOf<Pair<String, String>>()
 
+  private val stepLog = mutableListOf<String>()
+
   override fun toString() =
     """|ADVENTURE(${fate.hint()})
        |${choices.joinToString("\n") { "  ${it.first} => ${it.second}" }}
+       |== LOG ==
+       |${stepLog.joinToString("\n")}
        |""".trimMargin()
 
   fun logAsString() = toString()
+
+  fun logStep(step: String) {
+    stepLog.add(step)
+  }
 
   fun extractLog(answer: String) = AdventureLog(choices, answer)
 
@@ -97,6 +103,9 @@ class AssumptionViolatedException(message: String) : RuntimeException(message)
 fun <T> Adventure.choose(question: String, fn: Fate.() -> T) =
   chooseLabeled(question) { fn().run { toString() to this } }
 
+fun <T> Adventure.chooseFrom(question: String, vararg options: T) =
+  chooseLabeled(question) { scryPath(*options).let { it.toString() to it } }
+
 fun <T> Adventure.chooseFromNested(
   question: String,
   vararg options: Pair<String, Adventure.() -> T>
@@ -108,6 +117,14 @@ fun <T> Adventure.chooseFromNested(
 
 fun Adventure.chooseIntLessThan(question: String, n: Int) = choose(question) {
   scryIntLessThan(n)
+}
+
+fun Adventure.chooseSmallNaturalNumber(question: String) = choose(question) {
+  var i = 0
+  while (scryBit() == 1) {
+    i++
+  }
+  i
 }
 
 fun Adventure.chooseBoolean(question: String) = choose(question) {
@@ -129,11 +146,7 @@ fun Fate.scryIntLessThan(n: Int): Int {
   return scryIntLessThan((n + 1 - lowOrderBit) / 2) * 2 + lowOrderBit
 }
 
-fun fatesTo(i: Int) = object : Fates {
-  override fun allFates(): Sequence<Fate> {
-    return (0 until i + 1).map { FateFromInt(it) }.asSequence()
-  }
-}
+fun fatesTo(i: Int) = Fates { (0 until i + 1).map { FateFromInt(it) }.asSequence() }
 
 class FateFromInt(private val byteSource: Int) : Fate {
   private var remainingByteSource = byteSource
@@ -153,8 +166,8 @@ fun <T> Fate.scryPath(vararg choices: T) = choices[scryIntLessThan(choices.size)
 fun Adventure.chooseString(question: String) = choose(question) { scryString() }
 fun Fate.scryString() = scryPath("Satsuki", "Mei", "Totoro", "")
 
-fun Adventure.chooseStepAndExecute(vararg steps: Pair<String, () -> Unit>) {
-  chooseLabeled("Step") {
+fun <T> Adventure.chooseStepAndExecute(vararg steps: Pair<String, () -> T>): T {
+  return chooseLabeled("Step") {
     steps[scryIntLessThan(steps.size)]
   }()
 }
