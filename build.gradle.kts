@@ -3,20 +3,31 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 plugins {
   kotlin("multiplatform")
   application
-  kotlin("plugin.serialization") version "1.6.21"
+  kotlin("plugin.serialization")
+  id("maven-publish")
 }
 
+// Currently can publish to mavenLocal as net.saff:befuzz-jvm:0.1.1
 group = "net.saff"
-version = "1.0-SNAPSHOT"
+version = "0.1.1"
 
 kotlin {
-  val jvmTarget = jvm()
-
-  macosX64("native") {
-    binaries {
-      executable()
-    }
+  val jvmTarget = jvm {
+    withJava()
   }
+
+  // SAFF: re-enable
+//  macosArm64 {
+//    binaries {
+//      executable()
+//    }
+//  }
+
+//  macosX64 {
+//    binaries {
+//      executable()
+//    }
+//  }
 
   sourceSets {
     val commonMain by getting {
@@ -35,10 +46,13 @@ kotlin {
         implementation("net.saff.checkmark:checkmark:0.1.5")
       }
     }
-//    val nativeMain by getting {
-//      dependsOn(commonMain)
-//    }
+    val nativeMain by creating {
+      dependsOn(commonMain)
+    }
 //    val macosX64Main by getting {
+//      dependsOn(nativeMain)
+//    }
+//    val macosArm64Main by getting {
 //      dependsOn(nativeMain)
 //    }
   }
@@ -71,3 +85,17 @@ artifacts {
 application {
   mainClass.set("net.saff.heap.ProfileKt")
 }
+dependencies {
+  implementation(kotlin("stdlib-jdk8"))
+}
+repositories {
+  mavenCentral()
+}
+//val compileKotlin: KotlinCompile by tasks
+//compileKotlin.kotlinOptions {
+//  jvmTarget = "1.8"
+//}
+//val compileTestKotlin: KotlinCompile by tasks
+//compileTestKotlin.kotlinOptions {
+//  jvmTarget = "1.8"
+//}
