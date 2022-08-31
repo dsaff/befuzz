@@ -32,18 +32,17 @@ kotlin {
     withJava()
   }
 
-  // SAFF: re-enable
-//  macosArm64 {
-//    binaries {
-//      executable()
-//    }
-//  }
+  macosArm64 {
+    binaries {
+      executable()
+    }
+  }
 
-//  macosX64 {
-//    binaries {
-//      executable()
-//    }
-//  }
+  macosX64 {
+    binaries {
+      executable()
+    }
+  }
 
   sourceSets {
     val commonMain by getting {
@@ -65,12 +64,12 @@ kotlin {
     val nativeMain by creating {
       dependsOn(commonMain)
     }
-//    val macosX64Main by getting {
-//      dependsOn(nativeMain)
-//    }
-//    val macosArm64Main by getting {
-//      dependsOn(nativeMain)
-//    }
+    val macosX64Main by getting {
+      dependsOn(nativeMain)
+    }
+    val macosArm64Main by getting {
+      dependsOn(nativeMain)
+    }
   }
 
   // Thanks to https://github.com/jmfayard/kotlin-cli-starter/blob/5201ee91122b4572d40167e7fbfae2f341ce5dfb/build.gradle.kts#L139
