@@ -32,17 +32,18 @@ kotlin {
     withJava()
   }
 
-  macosArm64 {
-    binaries {
-      executable()
-    }
-  }
-
-  macosX64 {
-    binaries {
-      executable()
-    }
-  }
+  // SAFF: bring back?
+//  macosArm64 {
+//    binaries {
+//      executable()
+//    }
+//  }
+//
+//  macosX64 {
+//    binaries {
+//      executable()
+//    }
+//  }
 
   sourceSets {
     val commonMain by getting {
