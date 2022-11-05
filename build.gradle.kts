@@ -32,7 +32,7 @@ kotlin {
     withJava()
   }
 
-  // SAFF: bring back?
+  // cf https://github.com/dsaff/befuzz/issues/1
 //  macosArm64 {
 //    binaries {
 //      executable()
