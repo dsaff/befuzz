@@ -48,12 +48,12 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
       }
     }
     val jvmMain by getting {
       dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
       }
     }
     val jvmTest by getting {
@@ -103,9 +103,6 @@ application {
 }
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
-}
-repositories {
-  mavenCentral()
 }
 //val compileKotlin: KotlinCompile by tasks
 //compileKotlin.kotlinOptions {

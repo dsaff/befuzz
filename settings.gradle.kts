@@ -24,8 +24,3 @@ pluginManagement {
   }
 }
 
-dependencyResolutionManagement {
-  repositories {
-    mavenCentral()
-  }
-}
