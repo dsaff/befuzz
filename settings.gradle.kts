@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
+dependencyResolutionManagement {
+  repositories {
+    mavenCentral()
+  }
+}
 
-rootProject.name = "behavior-fuzzing"
+rootProject.name = "befuzz"
 
 pluginManagement {
   plugins {
