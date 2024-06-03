@@ -104,6 +104,9 @@ application {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
 }
+kotlin {
+  jvmToolchain(20)
+}
 //val compileKotlin: KotlinCompile by tasks
 //compileKotlin.kotlinOptions {
 //  jvmTarget = "1.8"
