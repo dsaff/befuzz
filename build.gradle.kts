@@ -105,7 +105,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
 }
 kotlin {
-  jvmToolchain(20)
+  jvmToolchain(17)
 }
 //val compileKotlin: KotlinCompile by tasks
 //compileKotlin.kotlinOptions {
