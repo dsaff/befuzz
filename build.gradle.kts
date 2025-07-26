@@ -23,6 +23,9 @@ plugins {
   id("maven-publish")
 }
 
+// SAFF: lots of grumble about
+//    java' Gradle plugin is not compatible with 'org.jetbrains.kotlin.multiplatform' plugin.
+
 // Currently can publish to mavenLocal as net.saff:befuzz-jvm:0.1.1
 group = "net.saff"
 version = "0.1.1"
