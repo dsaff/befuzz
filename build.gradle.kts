@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJvmCompilation
 
 plugins {
   kotlin("multiplatform")
-  application
+  // application
   kotlin("plugin.serialization")
   id("maven-publish")
 }
@@ -101,12 +101,12 @@ artifacts {
   add("jvmJars", tasks.getByName("jvmJar"))
 }
 
-application {
-  mainClass.set("net.saff.heap.ProfileKt")
-}
-dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-}
+//application {
+//  mainClass.set("net.saff.heap.ProfileKt")
+//}
+//dependencies {
+//  implementation(kotlin("stdlib-jdk8"))
+//}
 kotlin {
   jvmToolchain(17)
 }
