@@ -29,7 +29,8 @@ version = "0.1.1"
 
 kotlin {
   val jvmTarget = jvm {
-    withJava()
+    // SAFF: can I remove old code here?
+    // withJava()
   }
 
   // cf https://github.com/dsaff/befuzz/issues/1
@@ -91,7 +92,7 @@ kotlin {
 val jvmJars: Configuration by configurations.creating {
   isCanBeConsumed = true
   isCanBeResolved = false
-  extendsFrom(configurations["implementation"], configurations["runtimeOnly"])
+  extendsFrom(configurations["jvmMainImplementation"])
 }
 
 artifacts {
