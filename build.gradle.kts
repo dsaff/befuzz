@@ -29,22 +29,7 @@ version = "0.1.1"
 
 kotlin {
   val jvmTarget = jvm {
-    // SAFF: can I remove old code here?
-    // withJava()
   }
-
-  // cf https://github.com/dsaff/befuzz/issues/1
-//  macosArm64 {
-//    binaries {
-//      executable()
-//    }
-//  }
-//
-//  macosX64 {
-//    binaries {
-//      executable()
-//    }
-//  }
 
   sourceSets {
     val commonMain by getting {
@@ -66,12 +51,6 @@ kotlin {
     val nativeMain by creating {
       dependsOn(commonMain)
     }
-//    val macosX64Main by getting {
-//      dependsOn(nativeMain)
-//    }
-//    val macosArm64Main by getting {
-//      dependsOn(nativeMain)
-//    }
   }
 
   // Thanks to https://github.com/jmfayard/kotlin-cli-starter/blob/5201ee91122b4572d40167e7fbfae2f341ce5dfb/build.gradle.kts#L139
@@ -99,20 +78,6 @@ artifacts {
   add("jvmJars", tasks.getByName("jvmJar"))
 }
 
-//application {
-//  mainClass.set("net.saff.heap.ProfileKt")
-//}
-//dependencies {
-//  implementation(kotlin("stdlib-jdk8"))
-//}
 kotlin {
   jvmToolchain(17)
 }
-//val compileKotlin: KotlinCompile by tasks
-//compileKotlin.kotlinOptions {
-//  jvmTarget = "1.8"
-//}
-//val compileTestKotlin: KotlinCompile by tasks
-//compileTestKotlin.kotlinOptions {
-//  jvmTarget = "1.8"
-//}
