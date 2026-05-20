@@ -81,3 +81,8 @@ artifacts {
 kotlin {
   jvmToolchain(17)
 }
+
+// SAFF:
+// The Default Kotlin Hierarchy Template was not applied to 'project ':checkmark:befuzz'':
+//Explicit .dependsOn() edges were configured for the following source sets:
+//[nativeMain]
