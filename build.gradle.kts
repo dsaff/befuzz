@@ -49,9 +49,7 @@ kotlin {
         implementation(libs.checkmark)
       }
     }
-    val nativeMain by creating {
-      dependsOn(commonMain)
-    }
+    val nativeMain by creating
   }
 
   // Thanks to https://github.com/jmfayard/kotlin-cli-starter/blob/5201ee91122b4572d40167e7fbfae2f341ce5dfb/build.gradle.kts#L139
@@ -82,8 +80,3 @@ artifacts {
 kotlin {
   jvmToolchain(17)
 }
-
-// SAFF:
-// The Default Kotlin Hierarchy Template was not applied to 'project ':checkmark:befuzz'':
-//Explicit .dependsOn() edges were configured for the following source sets:
-//[nativeMain]
