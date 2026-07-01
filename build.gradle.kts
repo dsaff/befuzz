@@ -31,21 +31,22 @@ kotlin {
   val jvmTarget = jvm {
   }
 
+  // SAFF: warnings
   sourceSets {
     val commonMain by getting {
       dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+        implementation(libs.kotlinx.serialization.json)
       }
     }
     val jvmMain by getting {
       dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+        implementation(libs.kotlinx.serialization.json)
       }
     }
     val jvmTest by getting {
       dependencies {
-        implementation("junit:junit:4.13.2")
-        implementation("net.saff.checkmark:checkmark:0.1.5")
+        implementation(libs.junit)
+        implementation(libs.checkmark)
       }
     }
     val nativeMain by creating {
