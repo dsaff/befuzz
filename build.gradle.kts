@@ -80,3 +80,8 @@ artifacts {
 kotlin {
   jvmToolchain(17)
 }
+
+// SAFF:
+// w: The Kotlin source set nativeMain was configured but not added to any Kotlin compilation.
+// You can add a source set to a target's compilation by connecting it with the compilation's default source set using 'dependsOn'.
+// See https://kotl.in/connecting-source-sets
